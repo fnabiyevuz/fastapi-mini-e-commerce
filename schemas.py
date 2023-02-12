@@ -1,10 +1,12 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 
 class UserBase(BaseModel):
     phone: str
     first_name: str
     last_name: str
+    status: str
 
 
 class UserCreate(UserBase):
@@ -25,7 +27,6 @@ class CategoryBase(BaseModel):
 
 class Category(CategoryBase):
     id: int
-    name: str
 
     class Config:
         orm_mode = True
@@ -34,6 +35,7 @@ class Category(CategoryBase):
 class ProductBase(BaseModel):
     name: str
     price: int
+    quantity: int
     discount: int
     description: str
     category_id: str
@@ -45,10 +47,58 @@ class ProductBase(BaseModel):
 class Product(BaseModel):
     id: int
     name: str
+    quantity: int
     price: int
     discount: int
     description: str
     category_id: str
+
+    class Config:
+        orm_mode = True
+
+
+class ShopBase(BaseModel):
+    user: int
+    created_date: datetime
+    status: str
+
+    class Config:
+        orm_mode = True
+
+
+class ShopCreate(BaseModel):
+    user: int
+
+    class Config:
+        orm_mode = True
+
+
+class ShopStatus(BaseModel):
+    status: str
+
+    class Config:
+        orm_mode = True
+
+
+class Shop(ShopBase):
+    id: int
+    status: str
+
+    class Config:
+        orm_mode = True
+
+
+class ShopItemBase(BaseModel):
+    shop: int
+    product: int
+    quantity: int
+
+    class Config:
+        orm_mode = True
+
+
+class ShopItem(ShopItemBase):
+    id: int
 
     class Config:
         orm_mode = True
